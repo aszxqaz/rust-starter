@@ -13,6 +13,19 @@ async fn main() {
     // This is what allows us to print things to the console
     tracing_subscriber::fmt::init();
 
+    let now = Instant::now();
+
+    let resp = reqwest::get("https://testnet.binancefuture.com/fapi/v1/depth?symbol=btcusdt")
+        .await
+        .unwrap()
+        .text()
+        .await
+        .unwrap();
+
+    let elapsed = now.elapsed();
+    tracing::info!("Elapsed: {:.2?}", elapsed);
+    tracing::info!("{:#?}", resp);
+
     // Then, we create a router, which is a way of routing requests to different handlers
     let app = Router::new()
         // In order to add a route, we use the `route` method on the router
@@ -51,19 +64,6 @@ async fn main() {
         .await
         // Then, we unwrap the result, to which if it fails, we panic
         .unwrap();
-
-    let now = Instant::now();
-
-    let resp = reqwest::get("https://testnet.binancefuture.com/fapi/v1/depth?symbol=btcusdt")
-        .await
-        .unwrap()
-        .text()
-        .await
-        .unwrap();
-
-    let elapsed = now.elapsed();
-    println!("Elapsed: {:.2?}", elapsed);
-    println!("{:#?}", resp);
 }
 
 // This is our route handler, for the route root
