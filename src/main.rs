@@ -13,15 +13,15 @@ async fn main() {
     // This is what allows us to print things to the console
     tracing_subscriber::fmt::init();
 
-    for _ in 1..10 {
+    for _ in 1..20 {
         let now = Instant::now();
 
-        let resp = reqwest::get("https://testnet.binancefuture.com/fapi/v1/depth?symbol=btcusdt")
-            .await
-            .unwrap()
-            .text()
-            .await
-            .unwrap();
+        let resp = reqwest::blocking::get(
+            "https://testnet.binancefuture.com/fapi/v1/depth?symbol=btcusdt",
+        )
+        .unwrap()
+        .text()
+        .unwrap();
 
         let elapsed = now.elapsed();
         tracing::info!("Elapsed: {:.2?}", elapsed);
