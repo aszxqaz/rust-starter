@@ -13,18 +13,19 @@ async fn main() {
     // This is what allows us to print things to the console
     tracing_subscriber::fmt::init();
 
-    let now = Instant::now();
+    for _ in 1..10 {
+        let now = Instant::now();
 
-    let resp = reqwest::get("https://testnet.binancefuture.com/fapi/v1/depth?symbol=btcusdt")
-        .await
-        .unwrap()
-        .text()
-        .await
-        .unwrap();
+        let resp = reqwest::get("https://testnet.binancefuture.com/fapi/v1/depth?symbol=btcusdt")
+            .await
+            .unwrap()
+            .text()
+            .await
+            .unwrap();
 
-    let elapsed = now.elapsed();
-    tracing::info!("Elapsed: {:.2?}", elapsed);
-    tracing::info!("{:#?}", resp);
+        let elapsed = now.elapsed();
+        tracing::info!("Elapsed: {:.2?}", elapsed);
+    }
 
     // Then, we create a router, which is a way of routing requests to different handlers
     let app = Router::new()
