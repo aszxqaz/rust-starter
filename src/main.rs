@@ -13,7 +13,9 @@ async fn main() {
     // This is what allows us to print things to the console
     tracing_subscriber::fmt::init();
 
-    for _ in 1..20 {
+    let mut sum = 0;
+
+    for _ in 1..100 {
         let now = Instant::now();
 
         let resp = reqwest::blocking::get(
@@ -25,7 +27,10 @@ async fn main() {
 
         let elapsed = now.elapsed();
         tracing::info!("Elapsed: {:.2?}", elapsed);
+        sum += elapsed.as_millis();
     }
+
+    tracing::info!("Average: {:?} ms", sum / 100);
 
     // Then, we create a router, which is a way of routing requests to different handlers
     let app = Router::new()
