@@ -6,7 +6,6 @@ use axum::{http::StatusCode, response::IntoResponse, routing::get, Json, Router}
 use std::net::SocketAddr;
 use std::time::Instant;
 
-
 // This derive macro allows our main function to run asyncrohnous code. Without it, the main function would run syncrohnously
 #[tokio::main]
 async fn main() {
@@ -56,11 +55,13 @@ async fn main() {
     let now = Instant::now();
 
     let resp = reqwest::get("https://testnet.binancefuture.com/fapi/v1/depth?symbol=btcusdt")
-        .await?
+        .await
+        .unwrap()
         .text()
-        .await?;
+        .await
+        .unwrap();
 
-        let elapsed = now.elapsed();
+    let elapsed = now.elapsed();
     println!("Elapsed: {:.2?}", elapsed);
     println!("{:#?}", resp);
 }
